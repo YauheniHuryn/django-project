@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+{% include 'base/header.html' %}
+{% include 'add_header.html' %}
+{% endblock header %}
+
+{% block content %}
+{% include 'latest_product.html' %}
+{% include 'best_features.html' %}
+{% include 'call_to_action.html' %}
+{% endblock content %}
+

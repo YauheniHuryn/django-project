@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="send-message">
+     <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" enctype="multipart/form-data" class="contact-form">
+                {% csrf_token %}
+                {{rform}}
+                <input type = "submit" value="create">
+                </form>
+            </div>
+        </div>
+     </div>
+</div>
+{% endblock content %}

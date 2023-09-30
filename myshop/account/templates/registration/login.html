@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="send-message">
+     <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post" class="contact-form">
+                {% csrf_token %}
+                {{form}}
+                <input type = "submit" value="login" class="form-control">
+                </form>
+            </div>
+        </div>
+     </div>
+</div>
+{% endblock content %}
