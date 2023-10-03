@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "about_us",
     "contact",
     "account",
+    "cart",
+
 ]
 
 MIDDLEWARE = [
@@ -142,3 +144,4 @@ LOGIN_URL = "/account/login"
 LOGOUT_REDIRECT_URL = "/"
 
 COUNT_PAGES=5
+CART_SESSION_ID = 'cart'

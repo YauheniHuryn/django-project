@@ -12,7 +12,7 @@ urlpatterns = [
     path("contact/", include("contact.urls")),
     path("account/", include("django.contrib.auth.urls")),
     path("account/registration", include("account.urls")),
-
+    path("products", include("our_products.urls")),
 
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

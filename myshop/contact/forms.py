@@ -1,27 +1,57 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.urls import reverse
+from django import forms
+from .models import FeedBack
 
+class FeedBackForm(forms.Form):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "id": "name",
+                "placeholder": "Full Name"
+            }
+        )
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "id": "email",
+                "placeholder": "E-Mail Address"
+            }
+        )
+    )
+    subject = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "id": "subject",
+                "placeholder": "Subject"
+            }
+        )
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "class": "form-control",
+                "id": "message",
+                "placeholder": "Your Message"
+            }
+        )
+    )
 
-class FeedBack(models.Model):
-    objects = None
-    STATUSES = [
-        ("N", "New feedback"),
-        ("P", "Feedback in process"),
-        ("F", "Feedback is finished")
-    ]
-    name = models.CharField(max_length=50, verbose_name="Full name")
-    email = models.EmailField(max_length=50, verbose_name="User email")
-    subject = models.CharField(max_length=50, verbose_name="Subject")
-    message = models.TextField(verbose_name="Message", validators = [])
-    status = models.CharField(max_length=1, choices=STATUSES, default="N", verbose_name="Feedback status")
-    created = models.DateTimeField(auto_now_add=True,verbose_name="Created")
-    updated = models.DateTimeField(auto_now=True, verbose_name="Last updated")
+    def clean(self):
+        has_errors = False
+        if len(self.cleaned_data["message"]) > 40:
+            self.add_error("message","A lot of size")
+            has_errors = True
+        if self.cleaned_data["subject"].lower() == "google":
+            self.add_error("subject","Really?")
+            has_errors = True
 
-    class Meta:
-        db_table = "feedback"
-        verbose_name = "Feedback"
-        verbose_name_plural = "Feedbacks"
+        if has_errors:
+            print("invalid")
+            raise forms.ValidationError('Invalid form')
+        return self.cleaned_data
 
-    def __str__(self):
-        return self.name
+    def save(self):
+        FeedBack.objects.create(**self.cleaned_data)
