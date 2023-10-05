@@ -16,7 +16,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product_list_by_category',
+        return reverse('our_products:product_list_by_category',
                        args=[self.slug])
 
 
@@ -37,16 +37,15 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['name']
-
-    indexes = [
-        models.Index(fields=['id', 'slug']),
-        models.Index(fields=['name']),
-        models.Index(fields=['-created']),
-    ]
+        indexes = [
+            models.Index(fields=['id', 'slug']),
+            models.Index(fields=['name']),
+            models.Index(fields=['-created']),
+        ]
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product_detail',
+        return reverse('our_products:product_detail',
                        args=[self.id, self.slug])
