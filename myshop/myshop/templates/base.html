@@ -2,8 +2,8 @@
 <!doctype html>
 <html lang="en">
 
-  <head>
-
+<head>
+    {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -16,18 +16,22 @@
     <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'css/templatemo-sixteen.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.css' %}">
+    {% endblock head %}
+</head>
 
-  </head>
 
+<body>
 
-<main>
     {% block header %}
-      {% include 'base/header.html' %}
+        {% include 'base/header.html' %}
     {% endblock header %}
-    {% block content %}{% endblock content %}
-</main>
 
-{% include 'base/footer.html' %}
+    {% block content %}{% endblock content %}
+
+    {% include 'base/footer.html' %}
+
+</body>
+
 
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
