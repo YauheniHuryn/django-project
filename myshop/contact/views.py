@@ -4,12 +4,12 @@ from .forms import FeedBackForm
 
 # Create your views here.
 
+
 def contact(request):
     fbackform = FeedBackForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         fbackform = FeedBackForm(request.POST)
         if fbackform.is_valid():
             fbackform.save()
-            return redirect('contact_page')
+            return redirect("contact_page")
     return render(request, "contact.html", {"fbackform": fbackform, "page_tag": "contact_page"})
-
