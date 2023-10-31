@@ -1,10 +1,12 @@
 from django.db import models
 from django.urls import reverse
-
+from django.conf import settings
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
+    objects = models.Manager()
 
     class Meta:
         ordering = ["name"]
@@ -16,7 +18,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("our_products:product_list_by_category", args=[self.slug])
+        return reverse("product_list_by_category", args=[self.slug])
 
 
 class Product(models.Model):
@@ -29,17 +31,33 @@ class Product(models.Model):
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
 
     class Meta:
         ordering = ["name"]
-        indexes = [
-            models.Index(fields=["id", "slug"]),
-            models.Index(fields=["name"]),
-            models.Index(fields=["-created"]),
-        ]
+
+    indexes = [models.Index(fields=["id", "slug"]), models.Index(fields=["name"]), models.Index(fields=["-created"])]
 
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse("product_detail", args=[self.id, self.slug])
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.product}"
 
     def get_absolute_url(self):
-        return reverse("our_products:product_detail", args=[self.id, self.slug])
+        return reverse("our_products:cart_detail")
+
+class ShoppingList(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    objects = models.Manager()
