@@ -27,13 +27,13 @@ def product_detail(request, id, slug):
 @login_required
 def add_to_cart(request, product_id):
     cart_item = Cart.objects.filter(user=request.user, product=product_id).first()
-    prod = Product.objects.get(pk=product_id)
-    current_user = request.user
-    library_list = ShoppingList.objects.filter(user=current_user.id)
-    if prod in library_list:
+    product = Product.objects.get(pk=product_id)
+    user = request.user
+    library_list = ShoppingList.objects.filter(user=user.id)
+    if product in library_list:
         messages.success(request, "Item in your library.")
     else:
-        Cart.objects.create(user=request.user, product=prod)
+        Cart.objects.create(user=user, product=product)
         messages.success(request, "Item added to your cart.")
 
     return redirect("cart_detail")
@@ -58,6 +58,9 @@ def cart_detail(request):
         current_user = request.user
         for cart_item in cart_items:
             ShoppingList.objects.create(user=current_user, product=cart_item.product)
+            cart_item['update_quantity_form']=CartAddProductForm(initial={
+                'quantity': cart_item.quantity,
+                'update': True})
         Cart.objects.all().delete()
         return redirect("home_page")
 

@@ -12,6 +12,7 @@
                         <tr>
                             <th>Product</th>
                             <th>Quantity</th>
+                            <th>Remove</th>
                             <th>Price</th>
                             <th>Total Price</th>
                             <th></th>
@@ -22,8 +23,8 @@
                             <tr>
                                 <td>{{ item.product }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td>{{ item.product.price }}</td>
                                 <td><a href="{% url 'remove_from_cart' item.id %}">Remove</a></td>
+                                <td>{{ item.product.price }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -39,11 +40,13 @@
             {% else %}
                 <p>Your shopping cart is empty.</p>
             {% endif %}
+                <p class="text-right">
+                    <a href="{% url 'product_list' %}" class="button light">Continue shopping</a>
+                <p class="text-left">
+                    <a href="{% url 'orders:order_create' %}" class="button">Checkout</a>
+                </p>
             </div>
-              <form method="post">
-                  {% csrf_token %}
-                  <input type="submit" value="Buy" class="add_to_cart">
-              </form>
+
           </div>
         </div>
     </div>

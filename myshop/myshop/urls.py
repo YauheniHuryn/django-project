@@ -18,5 +18,6 @@ urlpatterns = [
     path("cart/", cart_detail, name="cart_detail"),
     path('products/<slug:category_slug>/', product_list, name='product_list_by_category'),
     path('products/<int:id>/<slug:slug>/', product_detail, name='product_detail'),
+    path('orders/', include('orders.urls', namespace='orders')),
     path("", include("home.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

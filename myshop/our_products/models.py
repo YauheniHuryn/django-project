@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -44,15 +45,20 @@ class Product(models.Model):
         return reverse("product_detail", args=[self.id, self.slug])
 
 
+
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return f"{self.product}"
 
     def get_absolute_url(self):
         return reverse("our_products:cart_detail")
+
+
+
 
 class ShoppingList(models.Model):
     user = models.ForeignKey(
